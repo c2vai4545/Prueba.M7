@@ -2,3 +2,20 @@ firebaseconn.js
 .env
 /app/config/db.config.js
 /node_modules
+# Ignorar archivos temporales
+*.tmp
+*.log
+
+# Ignorar archivos de configuración local
+config.local.js
+
+# Ignorar directorios de dependencias y compilados
+/dist
+/build
+
+# Ignorar archivos de respaldo
+*.bak
+*~
+
+# Ignorar archivos de caché
+.cache/

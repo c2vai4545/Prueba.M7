@@ -1,12 +1,11 @@
-const dotenv = require('dotenv');
-dotenv.config();
+const { Sequelize } = require('sequelize');
 
-// Configuración de la conexión a la base de datos utilizando variables de entorno
-module.exports = {
-  HOST: process.env.DB_HOST || "localhost", //valor demostracion, no dare mis datos jeje
-  PORT: process.env.DB_PORT || 3306, //puerto por defecto de mysql
-  USER: process.env.DB_USER || "root", //contraseña generica de xamp, mamp, mariadb y la mayoria de motores de base de datos
-  PASSWORD: process.env.DB_PASSWORD || "root", //MAMP usa esta pero Xamp se deja en blanco. Fijarse en la documentacion de cada motor de base de datos
-  DB: process.env.DB_NAME || "db_bootcamp", //nombre de la base de datos
-  dialect: process.env.DB_TYPE || "mysql" //tipo de base de datos, en este caso mysql
-};
+// Esta configuracion la coloque de ejemplo. Deben crear un archivo db.config.js y colocar la configuracion de su motor.
+const sequelize = new Sequelize('db_bootcamp', 'root', '', {
+  host: 'localhost',
+  dialect: 'mysql',
+  port: 3306,
+  logging: false
+});
+
+module.exports = sequelize;
