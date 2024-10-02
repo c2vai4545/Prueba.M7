@@ -1,2 +1,4 @@
 firebaseconn.js
 .env
+/app/config/db.config.js
+/node_modules

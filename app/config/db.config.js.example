@@ -1,0 +1,12 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
+// Configuración de la conexión a la base de datos utilizando variables de entorno
+module.exports = {
+  HOST: process.env.DB_HOST || "localhost", //valor demostracion, no dare mis datos jeje
+  PORT: process.env.DB_PORT || 3306, //puerto por defecto de mysql
+  USER: process.env.DB_USER || "root", //contraseña generica de xamp, mamp, mariadb y la mayoria de motores de base de datos
+  PASSWORD: process.env.DB_PASSWORD || "root", //MAMP usa esta pero Xamp se deja en blanco. Fijarse en la documentacion de cada motor de base de datos
+  DB: process.env.DB_NAME || "db_bootcamp", //nombre de la base de datos
+  dialect: process.env.DB_TYPE || "mysql" //tipo de base de datos, en este caso mysql
+};
