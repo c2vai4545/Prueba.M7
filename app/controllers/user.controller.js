@@ -1,6 +1,16 @@
 const { User, Bootcamp } = require('../models');
 
-// Crear y guardar usuarios
+/**
+ * Crea y guarda un nuevo usuario en la base de datos.
+ * 
+ * @param {Object} req - El objeto de solicitud HTTP.
+ * @param {Object} req.body - El cuerpo de la solicitud que contiene los datos del usuario.
+ * @param {string} req.body.firstName - El nombre del usuario.
+ * @param {string} req.body.lastName - El apellido del usuario.
+ * @param {string} req.body.email - El correo electrónico del usuario.
+ * @param {Object} res - El objeto de respuesta HTTP.
+ * @returns {Promise<void>} - Una promesa que se resuelve cuando se completa la operación.
+ */
 exports.createUser = async (req, res) => {
   try {
     const { firstName, lastName, email } = req.body;
@@ -11,7 +21,15 @@ exports.createUser = async (req, res) => {
   }
 };
 
-// Obtener los Bootcamp de un usuario
+/**
+ * Obtiene un usuario por su ID, incluyendo los Bootcamps asociados.
+ * 
+ * @param {Object} req - El objeto de solicitud HTTP.
+ * @param {Object} req.params - Los parámetros de la ruta.
+ * @param {string} req.params.id - El ID del usuario a buscar.
+ * @param {Object} res - El objeto de respuesta HTTP.
+ * @returns {Promise<void>} - Una promesa que se resuelve cuando se completa la operación.
+ */
 exports.findUserById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -27,7 +45,13 @@ exports.findUserById = async (req, res) => {
   }
 };
 
-// Obtener todos los Usuarios incluyendo los Bootcamp
+/**
+ * Obtiene todos los usuarios, incluyendo los Bootcamps asociados a cada uno.
+ * 
+ * @param {Object} req - El objeto de solicitud HTTP.
+ * @param {Object} res - El objeto de respuesta HTTP.
+ * @returns {Promise<void>} - Una promesa que se resuelve cuando se completa la operación.
+ */
 exports.findAll = async (req, res) => {
   try {
     const users = await User.findAll({
@@ -39,7 +63,19 @@ exports.findAll = async (req, res) => {
   }
 };
 
-// Actualizar usuario por Id
+/**
+ * Actualiza un usuario por su ID.
+ * 
+ * @param {Object} req - El objeto de solicitud HTTP.
+ * @param {Object} req.params - Los parámetros de la ruta.
+ * @param {string} req.params.id - El ID del usuario a actualizar.
+ * @param {Object} req.body - El cuerpo de la solicitud que contiene los datos actualizados del usuario.
+ * @param {string} req.body.firstName - El nombre actualizado del usuario.
+ * @param {string} req.body.lastName - El apellido actualizado del usuario.
+ * @param {string} req.body.email - El correo electrónico actualizado del usuario.
+ * @param {Object} res - El objeto de respuesta HTTP.
+ * @returns {Promise<void>} - Una promesa que se resuelve cuando se completa la operación.
+ */
 exports.updateUserById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -55,7 +91,15 @@ exports.updateUserById = async (req, res) => {
   }
 };
 
-// Eliminar un usuario por Id
+/**
+ * Elimina un usuario por su ID.
+ * 
+ * @param {Object} req - El objeto de solicitud HTTP.
+ * @param {Object} req.params - Los parámetros de la ruta.
+ * @param {string} req.params.id - El ID del usuario a eliminar.
+ * @param {Object} res - El objeto de respuesta HTTP.
+ * @returns {Promise<void>} - Una promesa que se resuelve cuando se completa la operación.
+ */
 exports.deleteUserById = async (req, res) => {
   try {
     const { id } = req.params;

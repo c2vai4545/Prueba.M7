@@ -1,6 +1,48 @@
 const { sequelize, User } = require('./app/models');
 const { Bootcamp } = require('./app/models');
 
+// Función para crear las tablas en la base de datos
+async function createTables() {
+  try {
+    // Eliminar tablas existentes
+    console.log("Executing (default): DROP TABLE IF EXISTS \"user_bootcamp\" CASCADE;");
+    await sequelize.query('DROP TABLE IF EXISTS "user_bootcamp" CASCADE;');
+
+    console.log("Executing (default): DROP TABLE IF EXISTS \"bootcamps\" CASCADE;");
+    await sequelize.query('DROP TABLE IF EXISTS "bootcamps" CASCADE;');
+
+    console.log("Executing (default): DROP TABLE IF EXISTS \"users\" CASCADE;");
+    await sequelize.query('DROP TABLE IF EXISTS "users" CASCADE;');
+
+    // Crear tabla users
+    console.log("Executing (default): CREATE TABLE IF NOT EXISTS \"users\" (\"id\" SERIAL , \"firstName\" VARCHAR(255), \"lastName\" VARCHAR(255), \"email\" VARCHAR(255), \"createdAt\" TIMESTAMP WITH TIME ZONE NOT NULL, \"updatedAt\" TIMESTAMP WITH TIME ZONE NOT NULL, UNIQUE (\"email\"), PRIMARY KEY (\"id\"));");
+    await sequelize.query('CREATE TABLE IF NOT EXISTS "users" ("id" SERIAL , "firstName" VARCHAR(255), "lastName" VARCHAR(255), "email" VARCHAR(255), "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL, "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL, UNIQUE ("email"), PRIMARY KEY ("id"));');
+
+    console.log("Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'users' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname;");
+    await sequelize.query('SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = \'r\' and t.relname = \'users\' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname;');
+
+    // Crear tabla bootcamps
+    console.log("Executing (default): CREATE TABLE IF NOT EXISTS \"bootcamps\" (\"id\" SERIAL , \"title\" VARCHAR(255), \"cue\" INTEGER, \"description\" VARCHAR(255), \"createdAt\" TIMESTAMP WITH TIME ZONE NOT NULL, \"updatedAt\" TIMESTAMP WITH TIME ZONE NOT NULL, PRIMARY KEY (\"id\"));");
+    await sequelize.query('CREATE TABLE IF NOT EXISTS "bootcamps" ("id" SERIAL , "title" VARCHAR(255), "cue" INTEGER, "description" VARCHAR(255), "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL, "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL, PRIMARY KEY ("id"));');
+
+    console.log("Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'bootcamps' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname;");
+    await sequelize.query('SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = \'r\' and t.relname = \'bootcamps\' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname;');
+
+    // Crear tabla user_bootcamp
+    console.log("Executing (default): CREATE TABLE IF NOT EXISTS \"user_bootcamp\" (\"createdAt\" TIMESTAMP WITH TIME ZONE NOT NULL, \"updatedAt\" TIMESTAMP WITH TIME ZONE NOT NULL, \"user_id\" INTEGER REFERENCES \"users\" (\"id\") ON DELETE CASCADE ON UPDATE CASCADE, \"bootcamp_id\" INTEGER REFERENCES \"bootcamps\" (\"id\") ON DELETE CASCADE ON UPDATE CASCADE, PRIMARY KEY (\"user_id\",\"bootcamp_id\"));");
+    await sequelize.query('CREATE TABLE IF NOT EXISTS "user_bootcamp" ("createdAt" TIMESTAMP WITH TIME ZONE NOT NULL, "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL, "user_id" INTEGER REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE, "bootcamp_id" INTEGER REFERENCES "bootcamps" ("id") ON DELETE CASCADE ON UPDATE CASCADE, PRIMARY KEY ("user_id","bootcamp_id"));');
+
+    console.log("Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'user_bootcamp' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname;");
+    await sequelize.query('SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = \'r\' and t.relname = \'user_bootcamp\' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname;');
+
+    console.log("Eliminando y resincronizando la base de datos.");
+  } catch (error) {
+    console.error("Error al crear las tablas:", error);
+  }
+}
+
+
+
 // Función para crear los bootcamps
 async function createBootcamps() {
   const bootcamps = [
@@ -23,11 +65,8 @@ async function createBootcamps() {
 
   try {
     for (const bootcampData of bootcamps) {
-      const [bootcamp, created] = await Bootcamp.findOrCreate({
-        where: { title: bootcampData.title },
-        defaults: bootcampData
-      });
-      console.log(created ? `Bootcamp creado: ${bootcamp.title}` : `Bootcamp ya existe: ${bootcamp.title}`);
+      const bootcamp = await Bootcamp.create(bootcampData);
+      console.log(">> Creado el bootcamp:", JSON.stringify(bootcamp.toJSON(), null, 1));
     }
   } catch (error) {
     console.error("Error al crear bootcamps:", error);
@@ -49,7 +88,11 @@ async function createUsers() {
         where: { email: userData.email },
         defaults: userData
       });
-      console.log(created ? `Usuario creado: ${user.firstName}` : `Usuario ya existe: ${user.firstName}`);
+      if (created) {
+        console.log(">> Se ha creado el usuario:", JSON.stringify(user.toJSON(), null, 1));
+      } else {
+        console.log(`Usuario ya existe: ${user.firstName}`);
+      }
     }
   } catch (error) {
     console.error("Error al crear usuarios:", error);
@@ -59,31 +102,52 @@ async function createUsers() {
 // Función para agregar usuarios a los bootcamps
 async function agregarUsuariosABootcamps() {
   try {
-    // Bootcamp de React
-    const bootcampReact = await Bootcamp.findOne({ where: { title: "Introducción al Bootcamp de React" } });
-    const mateo = await User.findOne({ where: { firstName: "Mateo", lastName: "Díaz" } });
-    const santiago = await User.findOne({ where: { firstName: "Santiago", lastName: "Mejías" } });
+    // Bootcamp de React (id=1)
+    const bootcampReact = await Bootcamp.findByPk(1);
+    const mateo = await User.findByPk(1);
+    const santiago = await User.findByPk(2);
     
     if (bootcampReact && mateo && santiago) {
-      await bootcampReact.addUsers([mateo, santiago]);
-      console.log("Usuarios agregados al Bootcamp de React");
+      await bootcampReact.addUser(mateo);
+      console.log("***************************");
+      console.log(`Agregado el usuario id=${mateo.id} al bootcamp con id=${bootcampReact.id}`);
+      console.log("***************************");
+      
+      await bootcampReact.addUser(santiago);
+      console.log("***************************");
+      console.log(`Agregado el usuario id=${santiago.id} al bootcamp con id=${bootcampReact.id}`);
+      console.log("***************************");
     }
 
-    // Bootcamp Desarrollo Web Full Stack
-    const bootcampWebFullStack = await Bootcamp.findOne({ where: { title: "Bootcamp Desarrollo Web Full Stack" } });
+    // Bootcamp Desarrollo Web Full Stack (id=2)
+    const bootcampWebFullStack = await Bootcamp.findByPk(2);
     
     if (bootcampWebFullStack && mateo) {
       await bootcampWebFullStack.addUser(mateo);
-      console.log("Usuario agregado al Bootcamp Desarrollo Web Full Stack");
+      console.log("***************************");
+      console.log(`Agregado el usuario id=${mateo.id} al bootcamp con id=${bootcampWebFullStack.id}`);
+      console.log("***************************");
     }
 
-    // Bootcamp Big Data, IA & ML
-    const bootcampBigData = await Bootcamp.findOne({ where: { title: "Bootcamp Big Data, Inteligencia Artificial & Machine Learning" } });
-    const lucas = await User.findOne({ where: { firstName: "Lucas", lastName: "Rojas" } });
+    // Bootcamp Big Data, IA & ML (id=3)
+    const bootcampBigData = await Bootcamp.findByPk(3);
+    const lucas = await User.findByPk(3);
     
     if (bootcampBigData && mateo && santiago && lucas) {
-      await bootcampBigData.addUsers([mateo, santiago, lucas]);
-      console.log("Usuarios agregados al Bootcamp Big Data, IA & ML");
+      await bootcampBigData.addUser(mateo);
+      console.log("***************************");
+      console.log(`Agregado el usuario id=${mateo.id} al bootcamp con id=${bootcampBigData.id}`);
+      console.log("***************************");
+      
+      await bootcampBigData.addUser(santiago);
+      console.log("***************************");
+      console.log(`Agregado el usuario id=${santiago.id} al bootcamp con id=${bootcampBigData.id}`);
+      console.log("***************************");
+      
+      await bootcampBigData.addUser(lucas);
+      console.log("***************************");
+      console.log(`Agregado el usuario id=${lucas.id} al bootcamp con id=${bootcampBigData.id}`);
+      console.log("***************************");
     }
   } catch (error) {
     console.error("Error al agregar usuarios a los bootcamps:", error);
