@@ -1,0 +1,11 @@
+const { Sequelize } = require('sequelize');
+
+// Esta configuracion la coloque de ejemplo. Deben crear un archivo db.config.js y colocar la configuracion de su motor.
+const sequelize = new Sequelize('db_bootcamp', 'root', '', {
+  host: 'localhost',
+  dialect: 'mysql',
+  port: 3306,
+  logging: false
+});
+
+module.exports = sequelize;
